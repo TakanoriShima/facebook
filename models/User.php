@@ -76,8 +76,25 @@
         }
         
         // ログイン判定メソッド
-        public function login(){
-            
+        public static function login($email, $password){
+            try {
+                $pdo = self::get_connection();
+                $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email AND password=:password");
+                // バインド処理
+                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+                // 実行
+                $stmt->execute();
+                // フェッチの結果を、Userクラスのインスタンスにマッピングする
+                $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'User');
+                $user = $stmt->fetch();
+                self::close_connection($pdo, $stmt);
+                // Userクラスのインスタンスを返す
+                return $user;
+                
+            } catch (PDOException $e) {
+                return 'PDO exception: ' . $e->getMessage();
+            }
         }
         
         // 指定されたidからデータを1件取得するメソッド
