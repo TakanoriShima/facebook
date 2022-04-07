@@ -19,20 +19,39 @@
         <script src="js/script.js"></script>
     </head>
     <body>
+        <?php include_once 'views/_navbar_view.php'; ?>
         <div class="container p-2">
-            <div class="row">
-                <h1 class="col-sm-12 text-center text-primary">トップページ</h1>
-            </div>
-            <div class="row mt-1">
-                <a class="offset-sm-3 col-sm-6 btn btn-danger" href="logout.php">ログアウト</a>
+            <div class="row mt-2">
+                <h1 class="col-sm-12 text-center text-primary">投稿一覧</h1>
             </div>
             <?php include_once 'views/_flush_view.php'; ?>
             <div class="row mt-2">
-                <div class="col-sm-3">
-                    <img src="uploads/users/<?= $login_user->image ?>" class="icon">
-                </div>
-                <div class="col-sm-5"><?= $login_user->name ?>さん、ようこそ！</div>
+                <?php if(count($posts) !== 0) : ?>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>投稿番号</th>
+                        <th>投稿者名</th>
+                        <th>タイトル</th>
+                        <th>内容</th>
+                        <th>画像</th>
+                        <th>投稿日時</th>
+                    </tr>
+                    <?php foreach($posts as $post): ?>
+                    <tr>
+                        <td><a href="posts_show.php?id=<?= $post->id ?>"><?= $post->id ?></a></td>
+                        <td><?= $post->name ?></td>
+                        <td><?= $post->title ?></td>
+                        <td><?= $post->content ?></td>
+                        <td><img src="uploads/posts/<?= $post->image ?>" alt="<?= $post->image ?>" class="post_img"></td>
+                        <td><?= $post->created_at ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </table>
+                <?php else: ?>
+                <h2 class="col-sm-12 text-center text-danger">投稿はまだありません</h2>
+                <?php endif; ?>
             </div>
+
         </div>
     </body>
 </html>

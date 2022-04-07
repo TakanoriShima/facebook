@@ -5,6 +5,9 @@
 .icon {
     width: 100%;
 }
+.post_img {
+    width: 100px;
+}
 /*media query*/
 /*ref)*/
 /*https://www.seojuku.com/blog/responsive-mediaquery.html*/
